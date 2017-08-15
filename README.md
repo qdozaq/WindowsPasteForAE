@@ -1,5 +1,5 @@
 # WindowsPasteForAE
 
-Work around script for After Effects on windows when pasting text.
+Work around script for After Effects on Windows when pasting text.
 
 
