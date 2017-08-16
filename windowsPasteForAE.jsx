@@ -1,6 +1,13 @@
 /*
 Author: Paul Mendoza
 Last Modified: 8/15/17
+
+todo:
+clean up code
+make dockable
+automatic text selection?
+replace text button with image button
+auto fill text of selected text layer
 */
 
 var mainComp;
@@ -13,13 +20,15 @@ var w = textBox.maximumSize.width / 2;
 
 textBox.box = textBox.add("edittext", [
     0, 0, w, h
-], "editme", {
+], "", {
     multiline: true,
     scrollable: true
 });
 
-textBox.paste = textBox.add("Button", [0,0,w,40], "Paste");
-textBox.cancel = textBox.add("Button", [0,0,w,40], "Cancel");
+textBox.btns = textBox.add("Group", undefined, undefined);
+
+var pasteBtn = textBox.btns.add("Button", [0,0,w/2,30], "Paste");
+var cancelBtn = textBox.btns.add("Button", [0,0,w/2,30], "Cancel");
 
 mainWin.btn.onClick = function() {
     mainComp = app.project.activeItem;
@@ -30,15 +39,15 @@ mainWin.btn.onClick = function() {
     textBox.show();
 };
 
-textBox.paste.onClick = function() {
+pasteBtn.onClick = function() {
     app.beginUndoGroup("paste");
     paste();
-    textBox.close();
+    textBox.hide();
     app.endUndoGroup();
 }
 
-textBox.cancel.onClick = function() {
-    textBox.close();
+cancelBtn.onClick = function() {
+    textBox.hide();
 }
 
 mainWin.show();
