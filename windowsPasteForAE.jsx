@@ -8,18 +8,19 @@ make dockable
 automatic text selection?
 replace text button with image button
 auto fill text of selected text layer
+resizeable paste box
 */
 
 var mainComp;
 var mainWin = new Window("palette", "paste", undefined);
 mainWin.btn = mainWin.add("Button", undefined, "Paste");
 
-var textBox = new Window("palette", "Paste Text", undefined, {resizable: true});
+var textBox = new Window("palette", "Paste Text", undefined, {resizeable: true});
 var h = textBox.maximumSize.height / 2;
-var w = textBox.maximumSize.width / 2;
+// var w = textBox.maximumSize.width / 2;
 
 textBox.box = textBox.add("edittext", [
-    0, 0, w, h
+    0, 0, h, h
 ], "", {
     multiline: true,
     scrollable: true
@@ -27,8 +28,8 @@ textBox.box = textBox.add("edittext", [
 
 textBox.btns = textBox.add("Group", undefined, undefined);
 
-var pasteBtn = textBox.btns.add("Button", [0,0,w/2,30], "Paste");
-var cancelBtn = textBox.btns.add("Button", [0,0,w/2,30], "Cancel");
+var pasteBtn = textBox.btns.add("Button", [0,0,h/2,30], "Paste");
+var cancelBtn = textBox.btns.add("Button", [0,0,h/2,30], "Cancel");
 
 mainWin.btn.onClick = function() {
     mainComp = app.project.activeItem;
