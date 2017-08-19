@@ -7,11 +7,11 @@ clean up code
 make dockable
 automatic text selection?
 replace text button with image button
-auto fill text of selected text layer
+√ - auto fill text of selected text layer
 resizeable paste box
 */
 
-var mainComp;
+var mainComp, selected;
 var mainWin = new Window("palette", "paste", undefined);
 mainWin.btn = mainWin.add("Button", undefined, "Paste");
 
@@ -37,6 +37,10 @@ mainWin.btn.onClick = function() {
         // alert("please select a text layer");
         return;
     }
+    selected = mainComp.selectedLayers[0];
+
+    if (selected && !selected.source)//check if selected layer is text layer
+        textBox.box.text = selected.sourceText.value;
     textBox.show();
 };
 
@@ -54,9 +58,9 @@ cancelBtn.onClick = function() {
 mainWin.show();
 
 function paste() {
-    var selected = mainComp.selectedLayers[0];
 
     if (selected && !selected.source) { //check if selected layer is text layer
+        // alert(selected.sourceText.value);
         selected.sourceText.setValue(textBox.box.text);
     } else {
         textLayer = mainComp.layers.addText(textBox.box.text);
