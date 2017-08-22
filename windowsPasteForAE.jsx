@@ -9,6 +9,7 @@ automatic text selection?
 replace text button with image button
 √ - auto fill text of selected text layer
 resizeable paste box
+make [enter] click highlighted button?
 */
 
 var mainComp, selected;
@@ -58,7 +59,6 @@ cancelBtn.onClick = function() {
 mainWin.show();
 
 function paste() {
-
     if (selected && !selected.source) { //check if selected layer is text layer
         // alert(selected.sourceText.value);
         selected.sourceText.setValue(textBox.box.text);
