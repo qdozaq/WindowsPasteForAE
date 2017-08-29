@@ -12,48 +12,55 @@ resizeable paste box
 make [enter] click highlighted button?
 */
 
+// Initial paste window
 var mainComp, selected;
 var mainWin = new Window("palette", "paste", undefined);
 mainWin.btn = mainWin.add("Button", undefined, "Paste");
 
-var textBox = new Window("palette", "Paste Text", undefined, {resizeable: true});
-var h = textBox.maximumSize.height / 2;
-// var w = textBox.maximumSize.width / 2;
+mainWin.btn.onClick = function() {
+    // mainComp = app.project.activeItem;
+    // if (mainComp == null) {
+    //     // alert("please select a text layer");
+    //     return;
+    // }
+    // selected = mainComp.selectedLayers[0];
+    //
+    // if (selected && !selected.source)//check if selected layer is text layer
+    //     textWindow.box.text = selected.sourceText.value;
+    textWindow.show();
+};
 
-textBox.box = textBox.add("edittext", [
+//Text box that appears after click on mainWin.btn
+var textWindow = new Window("palette", "Paste Text", undefined, {resizeable: true});
+var h = textWindow.maximumSize.height / 2;
+// var w = textWindow.maximumSize.width / 2;
+
+textWindow.box = textWindow.add("edittext", [
     0, 0, h, h
 ], "", {
     multiline: true,
     scrollable: true
 });
 
-textBox.btns = textBox.add("Group", undefined, undefined);
+textWindow.btns = textWindow.add("Group", undefined, undefined);
+var pasteBtn = textWindow.btns.add("Button", [0,0,h/2,30], "Paste");
+var cancelBtn = textWindow.btns.add("Button", [0,0,h/2,30], "Cancel");
 
-var pasteBtn = textBox.btns.add("Button", [0,0,h/2,30], "Paste");
-var cancelBtn = textBox.btns.add("Button", [0,0,h/2,30], "Cancel");
-
-mainWin.btn.onClick = function() {
-    mainComp = app.project.activeItem;
-    if (mainComp == null) {
-        // alert("please select a text layer");
-        return;
-    }
-    selected = mainComp.selectedLayers[0];
-
-    if (selected && !selected.source)//check if selected layer is text layer
-        textBox.box.text = selected.sourceText.value;
-    textBox.show();
-};
+textWindow.onResizing = function(){
+    textWindow.box.size = textWindow.size;
+    // pasteBtn.size = textWindow.size;
+    // cancelBtn.width = textWindow.width/2;
+}
 
 pasteBtn.onClick = function() {
     app.beginUndoGroup("paste");
     paste();
-    textBox.hide();
+    textWindow.hide();
     app.endUndoGroup();
 }
 
 cancelBtn.onClick = function() {
-    textBox.hide();
+    textWindow.hide();
 }
 
 mainWin.show();
@@ -61,8 +68,8 @@ mainWin.show();
 function paste() {
     if (selected && !selected.source) { //check if selected layer is text layer
         // alert(selected.sourceText.value);
-        selected.sourceText.setValue(textBox.box.text);
+        selected.sourceText.setValue(textWindow.box.text);
     } else {
-        textLayer = mainComp.layers.addText(textBox.box.text);
+        textLayer = mainComp.layers.addText(textWindow.box.text);
     }
 }
